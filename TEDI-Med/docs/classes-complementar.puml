@@ -1,0 +1,67 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam classBackgroundColor #F4F8FC
+skinparam classBorderColor #234B65
+hide empty members
+title TEDI Med — Terminal e testes
+class "br.edu.tedi.MainTerminal" as MainTerminal {
+  - {static} entrada: Scanner {readOnly}
+  - {static} servico: MedicamentoService {readOnly}
+  - {static} lembretes: LembreteService {readOnly}
+  - {static} FORMATO: DateTimeFormatter {readOnly}
+  - {static} texto(pergunta: String): String
+  - {static} numero(pergunta: String): int
+  - {static} horario(): LocalTime
+  - {static} exibir(lista: List<Medicamento>): void
+  - {static} cadastrar(): void
+  - {static} editar(): void
+  + {static} main(args: String[]): void
+}
+class "br.edu.tedi.TesteTEDIMed" as TesteTEDIMed {
+  - {static} verificar(condicao: boolean, descricao: String): void
+  + {static} main(args: String[]): void
+}
+class "br.edu.tedi.service.MedicamentoService" as MedicamentoService {
+  - medicamentos: List<Medicamento> {readOnly}
+  - proximoId: int = 1
+  + cadastrar(nome: String, dosagem: String, horario: LocalTime, orientacoes: String): Medicamento
+  + listar(): List<Medicamento>
+  + buscarPorId(id: int): Medicamento
+  + buscarPorNome(termo: String): List<Medicamento>
+  + editar(id: int, nome: String, dosagem: String, horario: LocalTime, orientacoes: String): boolean
+  + excluir(id: int): boolean
+}
+class "br.edu.tedi.service.LembreteService" as LembreteService {
+  - medicamentos: MedicamentoService {readOnly}
+  + LembreteService(medicamentos: MedicamentoService)
+  + consultarPorHorario(horario: LocalTime): List<Medicamento>
+}
+class "br.edu.tedi.model.Medicamento" as Medicamento {
+  - id: int {readOnly}
+  - nome: String
+  - dosagem: String
+  - orientacoes: String
+  - horario: LocalTime
+  + Medicamento(id: int, nome: String, dosagem: String, horario: LocalTime, orientacoes: String)
+  - {static} obrigatorio(texto: String): String
+  + getId(): int
+  + getNome(): String
+  + getDosagem(): String
+  + getHorario(): LocalTime
+  + getOrientacoes(): String
+  + setNome(nome: String): void
+  + setDosagem(dosagem: String): void
+  + setHorario(horario: LocalTime): void
+  + setOrientacoes(orientacoes: String): void
+  + toString(): String
+}
+MainTerminal --> "1" MedicamentoService : servico
+MainTerminal --> "1" LembreteService : lembretes
+MainTerminal ..> Medicamento : utiliza
+TesteTEDIMed ..> MedicamentoService : testa
+TesteTEDIMed ..> LembreteService : testa
+TesteTEDIMed ..> Medicamento : utiliza
+LembreteService --> "1" MedicamentoService : consulta
+MedicamentoService --> "0..*" Medicamento : medicamentos
+@enduml

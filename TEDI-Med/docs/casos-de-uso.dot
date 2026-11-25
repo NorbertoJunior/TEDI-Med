@@ -1,0 +1,19 @@
+graph G {
+graph [rankdir=LR,bgcolor=white,pad=.25, label="TEDI Med — Casos de uso",labelloc=t,fontsize=22,fontname="DejaVu Sans"];
+node [fontname="DejaVu Sans"];
+U [shape=plaintext,label="Pessoa idosa / usuário",image="ator.png",labelloc=b];
+subgraph cluster_s { label="TEDI Med"; color="#234B65"; node [shape=ellipse,style=filled,fillcolor="#F4F8FC",color="#234B65"];
+RF01 [label="RF01 — Cadastrar medicamento"];
+RF02 [label="RF02 — Listar medicamentos"];
+RF03 [label="RF03 — Buscar por nome"];
+RF04 [label="RF04 — Editar medicamento"];
+RF05 [label="RF05 — Excluir medicamento"];
+RF06 [label="RF06 — Consultar por horário"];
+}
+U -- RF01;
+U -- RF02;
+U -- RF03;
+U -- RF04;
+U -- RF05;
+U -- RF06;
+}

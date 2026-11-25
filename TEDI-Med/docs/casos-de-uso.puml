@@ -1,0 +1,18 @@
+@startuml
+left to right direction
+actor "Pessoa idosa / usuário" as U
+rectangle "TEDI Med" {
+ usecase "Cadastrar medicamento" as RF01
+ usecase "Listar medicamentos" as RF02
+ usecase "Buscar por nome" as RF03
+ usecase "Editar medicamento" as RF04
+ usecase "Excluir medicamento" as RF05
+ usecase "Consultar por horário" as RF06
+}
+U -- RF01
+U -- RF02
+U -- RF03
+U -- RF04
+U -- RF05
+U -- RF06
+@enduml

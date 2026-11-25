@@ -1,0 +1,8 @@
+Compilação: javac --release 17 -encoding UTF-8
+OK: cadastro e listagem
+OK: busca por nome
+OK: consulta de lembretes
+OK: edicao
+OK: horario antigo removido
+OK: exclusao
+Todos os testes passaram.

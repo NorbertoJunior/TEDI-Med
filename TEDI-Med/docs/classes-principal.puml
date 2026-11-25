@@ -1,0 +1,75 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam classBackgroundColor #F4F8FC
+skinparam classBorderColor #234B65
+hide empty members
+title TEDI Med — Diagrama de classes principal
+class "br.edu.tedi.Main" as Main {
+  + {static} main(args: String[]): void
+}
+class "br.edu.tedi.view.TelaPrincipal" as TelaPrincipal {
+  - servico: MedicamentoService {readOnly}
+  - lembretes: LembreteService {readOnly}
+  - modelo: DefaultTableModel {readOnly}
+  - tabela: JTable {readOnly}
+  - status: JLabel {readOnly}
+  - {static} AZUL: Color {readOnly}
+  - {static} FORMATO: DateTimeFormatter {readOnly}
+  + TelaPrincipal()
+  - botao(painel: JPanel, texto: String, acao: Runnable): void
+  - mostrar(lista: List<Medicamento>, contexto: String): void
+  - atualizar(): void
+  - aviso(texto: String): void
+  - selecionado(): Medicamento
+  + {static} interpretarHorario(texto: String): LocalTime
+  - formulario(m: Medicamento): void
+  - buscar(): void
+  - consultar(): void
+  - excluir(): void
+}
+class "br.edu.tedi.service.MedicamentoService" as MedicamentoService {
+  - medicamentos: List<Medicamento> {readOnly}
+  - proximoId: int = 1
+  + cadastrar(nome: String, dosagem: String, horario: LocalTime, orientacoes: String): Medicamento
+  + listar(): List<Medicamento>
+  + buscarPorId(id: int): Medicamento
+  + buscarPorNome(termo: String): List<Medicamento>
+  + editar(id: int, nome: String, dosagem: String, horario: LocalTime, orientacoes: String): boolean
+  + excluir(id: int): boolean
+}
+class "br.edu.tedi.service.LembreteService" as LembreteService {
+  - medicamentos: MedicamentoService {readOnly}
+  + LembreteService(medicamentos: MedicamentoService)
+  + consultarPorHorario(horario: LocalTime): List<Medicamento>
+}
+class "br.edu.tedi.model.Medicamento" as Medicamento {
+  - id: int {readOnly}
+  - nome: String
+  - dosagem: String
+  - orientacoes: String
+  - horario: LocalTime
+  + Medicamento(id: int, nome: String, dosagem: String, horario: LocalTime, orientacoes: String)
+  - {static} obrigatorio(texto: String): String
+  + getId(): int
+  + getNome(): String
+  + getDosagem(): String
+  + getHorario(): LocalTime
+  + getOrientacoes(): String
+  + setNome(nome: String): void
+  + setDosagem(dosagem: String): void
+  + setHorario(horario: LocalTime): void
+  + setOrientacoes(orientacoes: String): void
+  + toString(): String
+}
+class "javax.swing.JFrame" as JFrame <<biblioteca>> {
+}
+Main ..> TelaPrincipal : cria
+TelaPrincipal --|> JFrame
+TelaPrincipal "1" *-- "1" MedicamentoService : servico
+TelaPrincipal "1" *-- "1" LembreteService : lembretes
+LembreteService --> "1" MedicamentoService : consulta
+MedicamentoService --> "0..*" Medicamento : medicamentos
+TelaPrincipal ..> Medicamento : utiliza
+LembreteService ..> Medicamento : filtra
+@enduml
